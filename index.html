@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>TERMINAL INFERNAL</title>
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: #00ff88;
+  font-family: "Courier New", monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#terminal {
+  width: 80%;
+  max-width: 900px;
+}
+
+#output {
+  white-space: pre-wrap;
+  min-height: 420px;
+}
+
+#input-line {
+  display: flex;
+}
+
+.prompt {
+  margin-right: 8px;
+}
+
+input {
+  background: black;
+  border: none;
+  color: #00ff88;
+  font-family: inherit;
+  font-size: 1em;
+  width: 100%;
+  outline: none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="terminal">
+  <div id="output">
+SISTEMA INFERNAL v3.8.9
+ACESSO LIMITADO
+DIGITE UM TERMO
+  </div>
+
+  <div id="input-line">
+    <span class="prompt">&gt;</span>
+    <input id="command" autofocus />
+  </div>
+</div>
+
+<script>
+const output = document.getElementById("output");
+const input = document.getElementById("command");
+
+let awaiting = null; // controla perguntas (senha / sim-nao)
+
+const commands = {
+
+  "DEUS": "STATUS: MORTO / DESAPARECIDO",
+
+  "DESISTIR": `
+"Aqueles que ainda ouvem acreditam em recomeços.
+Apenas desistam.
+O mundo já foi condenado."
+`,
+
+  "MISSAO": "OBJETIVO ATUAL: COLETAR COMBUSTÍVEL",
+
+  "INFERNO": "STATUS: CHEIO",
+
+  "HUMANIDADE": "STATUS: EXTINTA",
+
+  "SANGUE": "CLASSIFICAÇÃO: COMBUSTÍVEL",
+
+  "ANJOS": "STATUS: DESIGUAIS",
+
+  "HUSKY": "SUBCLASSE DEMONÍACA — COOPERAÇÃO REGISTRADA",
+
+  "EXPERIMENTO": "REGISTROS ENTRE 001 E 389",
+
+  "MARCA": "IDENTIFICAÇÃO NÃO HUMANA",
+
+  // 🔴 GABRIEL
+  "GABRIEL": `
+ACESSO RESTRITO
+INSIRA A SENHA
+`,
+  // 🔴 DEMÔNIOS
+  "DEMÔNIOS": `
+ARQUIVO EXISTENTE
+DESEJA ACESSAR?
+(SIM / NAO)
+`,
+
+  // 🔴 ROBÔS
+  "ROBOS ATIVOS": `
+SENHA NECESSÁRIA
+DICA: QUANTIDADE CONFIRMADA
+`,
+
+  // 🔴 SIGNIFICADOS TERMINAL
+  "DANTE": `
+PROTOCOLO OBSOLETO
+
+FUNÇÃO:
+Mapeamento infernal inicial
+
+STATUS:
+FALHA CRÍTICA
+`,
+
+  "CAMADAS": `
+ERRO DE DEFINIÇÃO
+
+RESULTADO:
+NÃO HÁ NÍVEIS FIXOS
+
+NOTA:
+A DESCIDA É INTERNA
+`,
+
+  "MORTE": `
+CONCEITO INVÁLIDO
+
+AVISO:
+A MORTE NÃO ENCERRA PROCESSOS
+`
+};
+
+input.addEventListener("keydown", function(e) {
+  if (e.key !== "Enter") return;
+
+  const cmd = input.value.trim().toUpperCase();
+  output.textContent += "\n\n> " + cmd;
+  input.value = "";
+
+  /* FLUXOS ESPECIAIS */
+  if (awaiting === "DEMONIOS") {
+    awaiting = null;
+    if (cmd === "SIM") {
+      output.textContent += "\nACESSANDO ARQUIVOS INFERNAIS...";
+      setTimeout(() => {
+        window.location.href = "https://stefancasadamae-collab.github.io/infernais/";
+      }, 1500);
+    } else {
+      output.textContent += "\nOPERAÇÃO CANCELADA";
+    }
+    return;
+  }
+
+  if (awaiting === "ROBOS") {
+    awaiting = null;
+    if (cmd === "4") {
+      output.textContent += "\nSENHA ACEITA\nINICIALIZANDO UNIDADE...";
+      setTimeout(() => {
+        window.location.href = "https://stefancasadamae-collab.github.io/unidade-de-autonomia/";
+      }, 1800);
+    } else {
+      output.textContent += "\nSENHA INCORRETA";
+    }
+    return;
+  }
+
+  if (awaiting === "GABRIEL") {
+    awaiting = null;
+    if (cmd === "EXPERIMENTO 389") {
+      output.textContent += "\nACESSO CONCEDIDO\nREDIRECIONANDO...";
+      setTimeout(() => {
+        window.location.href = "https://stefancasadamae-collab.github.io/gabriel2/";
+      }, 1800);
+    } else {
+      output.textContent += "\nACESSO NEGADO";
+    }
+    return;
+  }
+
+  /* COMANDOS NORMAIS */
+  if (cmd === "DEMÔNIOS") {
+    output.textContent += "\n" + commands[cmd];
+    awaiting = "DEMONIOS";
+  }
+  else if (cmd === "ROBOS ATIVOS") {
+    output.textContent += "\n" + commands[cmd];
+    awaiting = "ROBOS";
+  }
+  else if (cmd === "GABRIEL") {
+    output.textContent += "\n" + commands[cmd];
+    awaiting = "GABRIEL";
+  }
+  else if (commands[cmd]) {
+    output.textContent += "\n" + commands[cmd];
+  }
+  else {
+    output.textContent += "\nCOMANDO INVÁLIDO";
+  }
+
+  output.scrollTop = output.scrollHeight;
+});
+</script>
+
+</body>
+</html>
