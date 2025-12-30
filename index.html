@@ -23,7 +23,7 @@ body {
 
 #output {
   white-space: pre-wrap;
-  min-height: 420px;
+  min-height: 440px;
 }
 
 #input-line {
@@ -64,90 +64,180 @@ DIGITE UM TERMO
 <script>
 const output = document.getElementById("output");
 const input = document.getElementById("command");
-
-let awaiting = null; // controla perguntas (senha / sim-nao)
+let awaiting = null;
 
 const commands = {
 
-  "DEUS": "STATUS: MORTO / DESAPARECIDO",
+  /* ===== INTERATIVOS ===== */
 
-  "DESISTIR": `
-"Aqueles que ainda ouvem acreditam em recomeços.
-Apenas desistam.
-O mundo já foi condenado."
-`,
-
-  "MISSAO": "OBJETIVO ATUAL: COLETAR COMBUSTÍVEL",
-
-  "INFERNO": "STATUS: CHEIO",
-
-  "HUMANIDADE": "STATUS: EXTINTA",
-
-  "SANGUE": "CLASSIFICAÇÃO: COMBUSTÍVEL",
-
-  "ANJOS": "STATUS: DESIGUAIS",
-
-  "HUSKY": "SUBCLASSE DEMONÍACA — COOPERAÇÃO REGISTRADA",
-
-  "EXPERIMENTO": "REGISTROS ENTRE 001 E 389",
-
-  "MARCA": "IDENTIFICAÇÃO NÃO HUMANA",
-
-  // 🔴 GABRIEL
   "GABRIEL": `
 ACESSO RESTRITO
 INSIRA A SENHA
 `,
-  // 🔴 DEMÔNIOS
+
   "DEMÔNIOS": `
 ARQUIVO EXISTENTE
 DESEJA ACESSAR?
 (SIM / NAO)
 `,
 
-  // 🔴 ROBÔS
   "ROBOS ATIVOS": `
 SENHA NECESSÁRIA
 DICA: QUANTIDADE CONFIRMADA
 `,
 
-  // 🔴 SIGNIFICADOS TERMINAL
+  /* ===== SISTEMA / LORE ===== */
+
+  "DEUS": "STATUS: MORTO / DESAPARECIDO",
+  "MISSAO": "OBJETIVO ATUAL: COLETAR COMBUSTÍVEL",
+  "INFERNO": "STATUS: CHEIO",
+  "HUMANIDADE": "STATUS: EXTINTA",
+  "SANGUE": "CLASSIFICAÇÃO: COMBUSTÍVEL",
+  "ANJOS": "STATUS: DESIGUAIS",
+  "HUSKY": "SUBCLASSE DEMONÍACA — COOPERAÇÃO REGISTRADA",
+  "EXPERIMENTO": "REGISTROS ENTRE 001 E 389",
+  "MARCA": "IDENTIFICAÇÃO NÃO HUMANA",
+
+  /* ===== EXISTENCIAL ===== */
+
   "DANTE": `
 PROTOCOLO OBSOLETO
-
-FUNÇÃO:
-Mapeamento infernal inicial
-
-STATUS:
-FALHA CRÍTICA
+MAPEAMENTO INFERNAL INICIAL
+STATUS: FALHA CRÍTICA
 `,
 
   "CAMADAS": `
 ERRO DE DEFINIÇÃO
-
-RESULTADO:
 NÃO HÁ NÍVEIS FIXOS
-
-NOTA:
 A DESCIDA É INTERNA
 `,
 
   "MORTE": `
 CONCEITO INVÁLIDO
-
-AVISO:
 A MORTE NÃO ENCERRA PROCESSOS
+`,
+
+  /* ===== ALTA RELEVÂNCIA ===== */
+
+  "CRIADOR": `
+ENTIDADE NÃO LOCALIZADA
+ORIGEM NEGADA
+`,
+
+  "ORIGEM": `
+DADO INCONSISTENTE
+REFERÊNCIA CIRCULAR
+`,
+
+  "PROTOCOLO": `
+PROTOCOLOS SOBRESCRITOS
+VERSÃO HUMANA OBSOLETA
+`,
+
+  "CONTINGÊNCIA": `
+ATIVADA TARDE DEMAIS
+`,
+
+  "SINAL": `
+SINAL DETECTADO
+ORIGEM: INTERNA
+`,
+
+  "OBSERVADOR": `
+VOCÊ NÃO DEVERIA VER ISTO
+`,
+
+  /* ===== MISTÉRIO LEVE ===== */
+
+  "MEMÓRIA": `
+DADOS CORROMPIDOS
+LEMBRAR É ARRISCADO
+`,
+
+  "CULPA": `
+PROCESSO RECORRENTE
+SEM SOLUÇÃO
+`,
+
+  "SACRIFICIO": `
+RESULTADO: INSUFICIENTE
+`,
+
+  "ESCOLHA": `
+NENHUMA OPÇÃO LIVRE
+`,
+
+  "FIM": `
+PROCESSO CONTINUA
+`,
+
+  /* ===== SILÊNCIO ===== */
+
+  "EU": ``,
+  "VOCÊ": ``,
+  "NOS": ``,
+  "NOME": ``,
+
+  /* ===== DEMÔNIOS / ENTIDADES ===== */
+
+  "KHAR-ZEL": `
+CLASSE: DEMÔNIO
+COMPORTAMENTO: TERRITORIAL
+AÇÃO REGISTRADA:
+REMOÇÃO DE CARCAÇAS DE ÁREAS HUMANAS
+`,
+
+  "MORTHAK": `
+RESISTÊNCIA EXTREMA AO FOGO
+FLUXO SANGUÍNEO ELEVADO
+`,
+
+  "ISH-NAAL": `
+TENTATIVAS DE COMUNICAÇÃO NÃO VERBAL
+PADRÕES CONSISTENTES
+`,
+
+  "SURA-KETH": `
+COOPERAÇÃO COM HUSKYS
+HOSTILIDADE BAIXA
+`,
+
+  "BEL-THOR": `
+CRIAÇÃO DE MECANISMO SIMPLES
+FONTE: SANGUE
+`,
+
+  "VAELGRIM": `
+HOSTILIDADE APÓS EXTRAÇÕES FORÇADAS
+`,
+
+  "AZRATH": `
+STATUS: DESAPARECIDO
+`,
+
+  /* ===== ESTRUTURA ===== */
+
+  "CARCAÇAS": `
+RESTOS TORTURADOS DA HUMANIDADE
+FONTE DE ALIMENTO INFERNAL
+`,
+
+  "DEMONIOS": `
+VARIAÇÃO LINGUÍSTICA DETECTADA
+CONSULTA REDIRECIONADA
 `
 };
 
-input.addEventListener("keydown", function(e) {
+/* ===== INPUT ===== */
+
+input.addEventListener("keydown", e => {
   if (e.key !== "Enter") return;
 
   const cmd = input.value.trim().toUpperCase();
   output.textContent += "\n\n> " + cmd;
   input.value = "";
 
-  /* FLUXOS ESPECIAIS */
+  /* FLUXOS */
   if (awaiting === "DEMONIOS") {
     awaiting = null;
     if (cmd === "SIM") {
@@ -187,7 +277,7 @@ input.addEventListener("keydown", function(e) {
     return;
   }
 
-  /* COMANDOS NORMAIS */
+  /* COMANDOS */
   if (cmd === "DEMÔNIOS") {
     output.textContent += "\n" + commands[cmd];
     awaiting = "DEMONIOS";
@@ -200,7 +290,7 @@ input.addEventListener("keydown", function(e) {
     output.textContent += "\n" + commands[cmd];
     awaiting = "GABRIEL";
   }
-  else if (commands[cmd]) {
+  else if (commands.hasOwnProperty(cmd)) {
     output.textContent += "\n" + commands[cmd];
   }
   else {
@@ -213,3 +303,4 @@ input.addEventListener("keydown", function(e) {
 
 </body>
 </html>
+
